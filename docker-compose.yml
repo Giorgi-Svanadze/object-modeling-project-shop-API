@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: Eshop
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/shopdb
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+    command: npm start
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
